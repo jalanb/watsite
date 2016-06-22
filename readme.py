@@ -1,28 +1,20 @@
 """
->>> import watsite as site
+>>> def test(arg):
+...    print('Hello World')
+...
 
->>> split_ext('fred')
-('fred', '')
->>> split_ext('fred.py')
-['fred', 'py']
->>> split_ext('fred.sh')
-['fred', 'sh']
+>>> from watsite.sym import main as site_main
+>>> site_main(main, [ 'something' '--test' ])
+Hello World
+
 """
-def split_ext(string):
-    return string.split('.') if '.' in string else (string, '')
 
+import doctest as dt
 
-import inspect
-import doctest
+from  watsite.decorators import docparser
+@docparser
+def main():
+   pass
 
-here = inspect.getmoduleinfo(__file__)
-name, suffix, mode, module_type = here
-_, ext = split_ext(suffix)
-
-module = importlib.import_module(name)
-
-doctest.testmod(
-        module,
-        optionflags=get_doctest_options(options),
-        verbose=options.verbose,
-    )
+if __name__ == '__main__':
+    dt.testmod(optionflags=dt.NORMALIZE_WHITESPACE)
